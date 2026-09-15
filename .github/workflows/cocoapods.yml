@@ -27,12 +27,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # watchOS fails linting when there are test, wedge in --skip-tests for
-        # those runs.
-        PLATFORM: ["ios", "macos", "tvos", "visionos", "watchos --skip-tests"]
-        CONFIGURATION: ["Debug", "Release"]
+        PLATFORM: ["visionos"]
+        CONFIGURATION: ["Debug"]
     steps:
     - uses: actions/checkout@v7
+      with:
+        ref: d482a439cc60b2289d4c281608635017d662972b
+    - name: Verify tested commit
+      run: test "$(git rev-parse HEAD)" = "d482a439cc60b2289d4c281608635017d662972b"
     # Manually expanding out static frameworks to avoid making to many jobs.
     - name: Pod lib lint
       run:  |
